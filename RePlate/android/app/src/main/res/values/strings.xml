@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">replate</string>
+    <string name="title_activity_main">replate</string>
+    <string name="package_name">undefined.app</string>
+    <string name="custom_url_scheme">undefined.app</string>
+</resources>
