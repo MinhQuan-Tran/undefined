@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
   export default {
-    name: "TemplateView",
-    components: {}
+    data() {
+      return {};
+    }
   };
 </script>
 
@@ -11,4 +12,8 @@
   </div>
 </template>
 
-<style></style>
+<style scoped>
+  .template {
+    text-align: center;
+  }
+</style>
