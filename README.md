@@ -8,6 +8,7 @@ Instructions:
 
 - Clone the repository
 - Run the following commands in the terminal:
+  - cd RePlate
   - npm install
   - npm run dev (to view the website)
   - npm run android (to view the android app)
