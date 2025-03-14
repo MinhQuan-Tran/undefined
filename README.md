@@ -8,8 +8,18 @@ Instructions:
 
 - Clone the repository
 - Run the following commands in the terminal:
-  - cd RePlate
-  - npm install
-  - npm run dev (to view the website)
-  - npm run android (to view the android app)
-  - npm run ios (to view the ios app)
+
+  - Frontend:
+
+    - cd RePlate
+    - npm install
+    - npm run dev (to view the website)
+    - npm run android (to view the android app)
+    - npm run ios (to view the ios app)
+
+  - Backend:
+    - .\env_site\Scripts\activate.ps1 (Windows)
+    - source env_site/bin/activate (Mac)
+    - cd RePlate_Backend
+    - pip install -r requirements.txt
+    - python manage.py runserver
