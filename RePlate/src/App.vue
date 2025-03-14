@@ -11,8 +11,10 @@ import HelloWorld from './components/HelloWorld.vue'
       <HelloWorld msg="RePlate" />
 
       <nav>
-        <RouterLink to="/">Homelalala</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <!-- <RouterLink to="/home">Homelalala</RouterLink> -->
+        <RouterLink to="/">About</RouterLink>
+        <RouterLink to="/login">Log In</RouterLink>
+        <RouterLink to="/signup">Sign Up</RouterLink>
       </nav>
     </div>
   </header>
