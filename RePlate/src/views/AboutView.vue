@@ -61,19 +61,8 @@
     font-size: 1rem;
     max-width: 800px;
     line-height: 1.5;
+    color: black;
   }
 }
 </style>
 
-
-<!-- <script>
-// $(function () {
-//   showText("#shortpurpose", "Turning food waste into community support: RePlate", 0, 500)
-// });
-var showText = function (target, message, index, interval) {   
-  if (index < message.length) {
-    $(target).append(message[index++]);
-    setTimeout(function () { showText(target, message, index, interval); }, interval);
-  }
-}
-</script> -->
