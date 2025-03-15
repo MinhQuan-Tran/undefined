@@ -65,7 +65,7 @@ const router = createRouter({
     {
       path: "/profile/edit",
       name: "profile-edit",
-      component: EditProfileView
+      component: () => import("../views/EditProfileView.vue")
     }
   ]
 });

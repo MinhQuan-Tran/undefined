@@ -33,10 +33,10 @@ export default {
       <RouterLink to="/profile/edit">
         <button class="btn primary">Edit Profile</button>
       </RouterLink>
-      <button class="btn secondary">Location</button>
-      <button class="btn secondary">Display</button>
-      <button class="btn secondary">Clear Cache</button>
-      <button class="btn secondary">Clear History</button>
+      <button class="btn primary">Location</button>
+      <button class="btn primary">Display</button>
+      <button class="btn primary">Clear Cache</button>
+      <button class="btn primary">Clear History</button>
       <button class="btn danger">Logout</button>
     </div>
   </div>
@@ -61,7 +61,7 @@ export default {
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #42b983;
+  border: 2px solid #000000;
   transition: transform 0.3s ease-in-out;
 }
 
@@ -82,7 +82,6 @@ h2 {
   font-weight: bold;
 }
 
-/* Buttons container */
 .button-group {
   display: flex;
   flex-direction: column;
@@ -92,12 +91,9 @@ h2 {
   max-width: 320px;
 }
 
-/* Button styles */
 .btn {
   padding: 12px;
   width: 100%;
-  border: none;
-  border-radius: 8px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -105,33 +101,22 @@ h2 {
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Primary button */
 .btn.primary {
-  background: #42b983;
-  color: white;
+  background: white;
+  color: #333;
+  border: 1px solid #8a8a8a;
 }
 
 .btn.primary:hover {
-  background: #369d77;
-  transform: translateY(-2px);
-}
-
-/* Secondary buttons */
-.btn.secondary {
-  background: white;
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.btn.secondary:hover {
   background: #e0e0e0;
   transform: translateY(-2px);
 }
 
-/* Danger button */
 .btn.danger {
   background: #e74c3c;
+  border-radius: 25px;
   color: white;
+  border: none;
 }
 
 .btn.danger:hover {
