@@ -63,18 +63,6 @@
         }
       }
     }
-    const savedUser = localStorage.getItem("userProfile");
-    if (savedUser) {
-      this.user = JSON.parse(savedUser);
-    }
-  },
-  methods: {
-    saveProfile() {
-      localStorage.setItem("userProfile", JSON.stringify(this.user));
-      this.$router.push("/profile");
-    }
-  },
-
   };
   </script>
   
