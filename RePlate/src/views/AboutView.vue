@@ -37,12 +37,6 @@
     max-width: 800px;
     line-height: 1.5;
   }
-  /* .powerful_description {
-    font-size: 1.25rem;
-    max-width: 800px;
-    color:forestgreen;
-    line-height: 1.5;
-  } */
 }
 </style>
 
