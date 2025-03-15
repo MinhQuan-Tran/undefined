@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LogInView from "@/views/LogInView.vue";
 import SignUpView from "@/views/SignUpView.vue";
+import CreatePostView from "@/views/CreatePostView.vue";
+import CreateRequestView from "@/views/CreateRequestView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 
 const router = createRouter({
@@ -32,6 +34,16 @@ const router = createRouter({
       path: "/signup",
       name: "signup",
       component: SignUpView
+    },
+    {
+      path: "/createpost",
+      name: "createpost",
+      component: CreatePostView
+    },
+    {
+      path: "/createrequest",
+      name: "createrequest",
+      component: CreateRequestView
     },
     {
       path: "/profile",
