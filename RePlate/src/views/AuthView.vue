@@ -6,7 +6,7 @@
     data() {
       return {
         clientId: "648036916024-0habpslihj4isq59snnglv8gd7vdip7l.apps.googleusercontent.com",
-        errors: []
+        error: null
       };
     },
 
@@ -53,7 +53,7 @@
       },
 
       async sendTokenToBackend(token) {
-        this.errors = [];
+        this.error = null;
 
         this.userStore
           .authUser(token)
@@ -61,7 +61,7 @@
             this.$router.push("/feed");
           })
           .catch((error) => {
-            this.errors = error.response.data.errors;
+            this.error = error.message;
           });
       }
     }
@@ -80,8 +80,8 @@
     ></div>
     <div class="g_id_signin" data-type="standard"></div>
 
-    <div class="errors" v-if="errors.length">
-      <p v-for="error in errors" :key="error">{{ error }}</p>
+    <div class="error" v-if="error">
+      {{ error }}
     </div>
   </div>
 </template>
@@ -92,6 +92,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
     height: 100vh;
+  }
+
+  .error {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid red;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    color: red;
   }
 </style>

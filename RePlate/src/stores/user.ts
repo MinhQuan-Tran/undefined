@@ -5,7 +5,7 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     name: "",
     userType: "",
-    profilePic: "",
+    profilePicture: "",
     rating: 0
   }),
 
@@ -15,7 +15,7 @@ export const useUserStore = defineStore("user", {
 
   actions: {
     async authUser(token: string) {
-      fetch("http://127.0.0.1:8000/api/auth/google/", {
+      return await fetch("http://127.0.0.1:8000/api/auth/google/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token })
@@ -23,13 +23,10 @@ export const useUserStore = defineStore("user", {
         .then((res) => res.json())
         .then((data) => {
           console.log("Authenticated: ", data);
-          this.name = data.name;
-          this.userType = data.userType;
-          this.profilePic = data.profilePic;
-          this.rating = data.rating;
-        })
-        .catch((err) => {
-          console.error("Error registering: ", err);
+          this.name = data["name"];
+          this.userType = data["user_type"];
+          this.profilePicture = data["profile_picture"];
+          this.rating = data["rating"];
         });
     }
   }
