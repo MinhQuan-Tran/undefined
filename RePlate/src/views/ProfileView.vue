@@ -61,7 +61,7 @@ export default {
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #42b983;
+  border: 2px solid #000000;
   transition: transform 0.3s ease-in-out;
 }
 
