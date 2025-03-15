@@ -68,7 +68,8 @@ def get_user_data(request):
             "email": user.email,
             "profile_picture": user.profile_picture if isinstance(user.profile_picture, str) else None,
             "user_type": getattr(user, "user_type", "user"),
-            "rating": getattr(user, "rating", 0)
+            "rating": getattr(user, "rating", 0),
+            "created_at": user.created_at
         })
     except Token.DoesNotExist:
         return Response({"error": "Invalid token"}, status=401)
