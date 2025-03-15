@@ -18,7 +18,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["description", "location", "quantity", "expiration_day", "images"]  # Only user-defined fields
+        fields = ["description", "location", "quantity", "expire_at", "images"]  # Only user-defined fields
 
     def create(self, validated_data):
         images = validated_data.pop("images", [])  # Extract images before saving

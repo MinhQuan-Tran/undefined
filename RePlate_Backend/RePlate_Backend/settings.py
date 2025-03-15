@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-c8^s^=)m7sx!jxv=a#&7_s&ih=@urmua%d+(i%7*xf%1lof+2t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['44.211.65.112', 'ec2-44-211-65-112.compute-1.amazonaws.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -68,7 +68,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vue frontend
     "http://127.0.0.1:5173",
 ]
-
 
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies for authentication
 
