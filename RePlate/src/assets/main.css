@@ -1,4 +1,4 @@
-@import './base.css';
+@import "./base.css";
 
 #app {
   max-width: 1280px;
@@ -31,5 +31,11 @@ a,
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
+  }
+
+  #app:has(#navbar) {
+    display: block;
+    margin: 0.5rem;
+    margin-top: calc(1rem + 48px);
   }
 }

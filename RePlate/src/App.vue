@@ -1,6 +1,13 @@
-<script setup lang="ts">
+<script lang="ts">
   import { RouterLink, RouterView } from "vue-router";
   import HelloWorld from "./components/HelloWorld.vue";
+  import Navbar from "./components/Navbar.vue";
+
+  export default {
+    components: {
+      Navbar
+    }
+  };
 </script>
 
 <template>
@@ -17,6 +24,8 @@
       </nav>
     </div>
   </header>
+
+  <Navbar v-else></Navbar>
 
   <RouterView />
 </template>
@@ -82,11 +91,9 @@
 
     nav {
       text-align: left;
-      margin-left: -1rem;
       font-size: 1rem;
 
       padding: 1rem 0;
-      margin-top: 1rem;
     }
   }
 </style>
