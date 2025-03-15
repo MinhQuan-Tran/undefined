@@ -47,8 +47,6 @@ export const useUserStore = defineStore("user", {
     async fetchUserData() {
       if (!this.token) return;
 
-      console.log(this.token);
-
       try {
         // 127.0.0.1:8000
         // 44.211.65.112:8000

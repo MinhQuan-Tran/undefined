@@ -6,14 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
-    "android": "npm run build && npx cap sync android && npx cap run android",
-    "ios": "npm run build && npx cap sync ios && npx cap run ios",
+    "android": "npm run build && npx cap sync android && npx cap open android",
+    "ios": "npm run build && npx cap sync ios && npx cap open ios",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
     "@capacitor/android": "^7.1.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/browser": "^7.0.0",
     "@capacitor/core": "^7.1.0",
     "@capacitor/ios": "^7.1.0",
     "@react-oauth/google": "^0.12.1",
