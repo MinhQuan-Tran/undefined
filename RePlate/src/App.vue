@@ -12,15 +12,15 @@
 
 <template>
   <header v-if="['/', '/about', '/auth'].includes($route.path)">
-    <img alt="Vue logo" class="logo" src="@/assets/replate-logo.png" width="125" height="125" />
+    <img alt="Vue logo" class="logo" src="@/assets/replate-logo.png" width="250" height="250" />
 
     <div class="wrapper">
       <HelloWorld msg="RePlate" />
 
       <nav>
-        <RouterLink to="/">Homelalala</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/auth">Auth</RouterLink>
+        <RouterLink to="/">About</RouterLink>
+        <!-- <RouterLink to="/about">About</RouterLink> -->
+        <RouterLink to="/auth">Login/Signup</RouterLink>
       </nav>
     </div>
   </header>
