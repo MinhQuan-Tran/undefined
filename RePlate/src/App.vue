@@ -18,9 +18,9 @@
       <HelloWorld msg="RePlate" />
 
       <nav>
-        <RouterLink to="/">Homelalala</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/auth">Auth</RouterLink>
+        <RouterLink to="/">About</RouterLink>
+        <!-- <RouterLink to="/about">About</RouterLink> -->
+        <RouterLink to="/auth">Login/Signup</RouterLink>
       </nav>
     </div>
   </header>
