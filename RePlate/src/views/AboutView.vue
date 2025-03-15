@@ -8,7 +8,7 @@
     <p class="description">Whether we are connecting bakeries with unsold pastries or a restuarant with extra meals, we make it easy for them to connect with local organisations and people in real time. Businesses reduce waste, and people in need are able to access sustainable, quality meals. 
     </p>
     <h2 class="title">What We Do</h2>
-    <p class="description">We connect people and businesses with excess food, with those who need it. If you have perfectly good food that will otherwise go to waste, simply post a photo of the food and what people need to know, and others can come and collevt it!</p>
+    <p class="description">We connect people and businesses with excess food, with those who need it. If you have perfectly good food that will otherwise go to waste, simply post a photo of the food and what people need to know, and others can come and collect it!</p>
   </div>
 </template>
 
