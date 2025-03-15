@@ -77,6 +77,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vue frontend
     "http://127.0.0.1:5173",
+    "https://replate.netlify.app",  # Production frontend
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies for authentication
