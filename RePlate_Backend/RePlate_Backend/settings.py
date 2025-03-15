@@ -64,6 +64,16 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",  # Token-based auth
+        "rest_framework_simplejwt.authentication.JWTAuthentication",  # JWT auth
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+}
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vue frontend
     "http://127.0.0.1:5173",

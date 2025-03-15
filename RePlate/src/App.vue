@@ -2,10 +2,24 @@
   import { RouterLink, RouterView } from "vue-router";
   import HelloWorld from "./components/HelloWorld.vue";
   import Navbar from "./components/Navbar.vue";
+  import { mapStores } from "pinia";
+  import { useUserStore } from "@/stores/user";
 
   export default {
     components: {
       Navbar
+    },
+
+    computed: {
+      ...mapStores(useUserStore)
+    },
+
+    mounted() {
+      if (this.userStore.isLoggedIn) {
+        this.userStore.fetchUserData().catch((err) => {
+          console.error("Failed to fetch user data:", err);
+        });
+      }
     }
   };
 </script>
@@ -47,7 +61,6 @@
     border-radius: 50%;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
-
 
   nav {
     width: 100%;
