@@ -34,6 +34,7 @@ def google_auth(request):
             user.user_type = "individual"  # Default user type
             user.profile_picture = picture  # Only if the model has this field
             user.rating = 0  # Default rating
+            user.created_at = timezone.now()
             user.save()
 
         # Generate authentication token
@@ -45,7 +46,8 @@ def google_auth(request):
             "name": user.first_name,
             "profile_picture": picture,
             "user_type": getattr(user, "user_type", "user"),
-            "rating": getattr(user, "rating", 0)
+            "rating": getattr(user, "rating", 0),
+            "created_at": user.created_at
         })
     except Exception as e:
         return Response({"error": str(e)}, status=400)
