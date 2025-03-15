@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-container">
     <div class="about"style=" max-width: fit-content; max-height: fit-content;">
-      <h1 class="main_title">RePlate</h1>
+      <h1 class="main_title">About Us</h1>
       <div class="info-container">
         <div class="section">
           <div class="purpose">
@@ -71,6 +71,7 @@
   }
 
   .main_title {
+    font-family:Georgia, 'Times New Roman', Times, serif;
     color: #ffffff;
     font-size: 3rem;
     font-weight: 600;
@@ -92,25 +93,25 @@
 
   .powerful_description {
     font-size: 1.25rem;
-    color: forestgreen;
+    color: #a2611f;
     max-width: 800px;
     text-align: center;
     margin-bottom: 10px;
   }
 
   .description {
-    font-size: 1rem;
+    font-size: 0.9rem;
     max-width: 800px;
     line-height: 1.5;
-    color: black;
+    color: #2A2420;
     text-align: center;
   }
 
   .purpose, .do, .us, .involved {
-    background-color: rgb(237, 237, 219);
+    background-color: #D9D8D5;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: inset;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 100%;
   }
 
