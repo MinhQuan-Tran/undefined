@@ -6,7 +6,8 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "url/*": ["http://44.211.65.112:8000/posts/*"]
     }
   }
 }
