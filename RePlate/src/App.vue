@@ -14,7 +14,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/">About</RouterLink>
         <RouterLink to="/login">Log In</RouterLink>
         <RouterLink to="/signup">Sign Up</RouterLink>
-        <RouterLink to="/feed">Feed</RouterLink>
+        <!-- <RouterLink to="/feed">Feed</RouterLink> -->
       </nav>
     </div>
 
