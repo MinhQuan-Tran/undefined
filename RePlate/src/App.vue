@@ -1,6 +1,13 @@
-<script setup lang="ts">
+<script lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/Navbar.vue';
+
+export default {
+  components: {
+    Navbar
+  }
+}
 </script>
 
 <template>
@@ -15,14 +22,14 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/login">Log In</RouterLink>
         <RouterLink to="/signup">Sign Up</RouterLink>
         <!-- <RouterLink to="/feed">Feed</RouterLink> -->
-        <RouterLink to="/createpost">Create a Listing</RouterLink>
+        <!-- <RouterLink to="/createpost">Create a Listing</RouterLink>
         <RouterLink to="/createrequest">Post a Request</RouterLink>
-        <RouterLink to="/profile">Profile</RouterLink>
+        <RouterLink to="/profile">Profile</RouterLink> -->
       </nav>
     </div>
-
-    
   </header>
+
+  <Navbar v-else></Navbar>
 
   <RouterView />
 </template>

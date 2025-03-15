@@ -7,8 +7,7 @@
 </script>
 
 <template>
-    
-      <nav class="py-5 px-5 border-b border-gray-200 fixed top-0 left-0 right-0 w-full bg-white">
+ <nav class="py-5 px-5 border-b border-gray-200 fixed top-0 left-0 right-0 w-full bg-white">
         <div class="w-full">
             <div class="flex justify-around">
               <a href="/feed" title="Home" v-if="$route.path !== '/feed'">
@@ -29,25 +28,7 @@
         </div>
 
       </nav>
-
-        <div>
-          <a href="/createpost">
-          <button>Share Food</button>
-        </a>
-        </div>
-
-        
-        <div>feed scroll here</div>
-
-        <div>
-          <a href="/createrequest">
-          <button>Request Food</button>
-        </a>
-        </div>
-
-
 </template>
-
 
 <style scoped>
   .template {
