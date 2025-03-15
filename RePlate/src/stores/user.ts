@@ -3,10 +3,15 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    name: String,
-    userType: String,
-    profilePic: String
+    name: "",
+    userType: "",
+    profilePic: "",
+    rating: 0
   }),
+
+  getters: {
+    isLoggedIn: (state) => state.name !== ""
+  },
 
   actions: {
     async authUser(token: string) {
@@ -21,6 +26,7 @@ export const useUserStore = defineStore("user", {
           this.name = data.name;
           this.userType = data.userType;
           this.profilePic = data.profilePic;
+          this.rating = data.rating;
         })
         .catch((err) => {
           console.error("Error registering: ", err);

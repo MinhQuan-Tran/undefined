@@ -26,10 +26,11 @@ def google_auth(request):
         if created:
             user.user_type = "individual"  # Set default user type
             user.profile_picture = picture  # If you have a profile picture field
+            user.rating = null  # Set default rating
             user.save()
 
         token, _ = Token.objects.get_or_create(user=user)
 
-        return Response({"token": token.key, "email": user.email, "name": user.first_name, "profile_picture": picture, "user_type": user.user_type})
+        return Response({"token": token.key, "email": user.email, "name": user.first_name, "profile_picture": picture, "user_type": user.user_type, "rating": user.rating})
     except Exception as e:
         return Response({"error": str(e)}, status=400)
