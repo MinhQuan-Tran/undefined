@@ -37,7 +37,7 @@
           location: "",
           phone: "",
           join: "",
-          avatar: "/src/assets/profile-icon.png"
+          avatar: '/src/assets/profile-icon.png'
         }
       };
     },
@@ -53,13 +53,12 @@
         this.$router.push("/profile");
       },
       updateProfilePicture(event) {
-        const file = event.target.files[0];
-        if (file) {
+        if (event.target.files[0]) {
           const reader = new FileReader();
           reader.onload = () => {
-            this.user.avatar = reader.result; // Update the avatar with the selected image
+            this.user.avatar = reader.result;
           };
-          reader.readAsDataURL(file); // Read the file as a data URL
+          reader.readAsDataURL(file);
         }
       }
     }
@@ -152,7 +151,7 @@
     padding: 12px;
     width: 100%;
     border: none;
-    border-radius: 8px;
+    border-radius: 25px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
