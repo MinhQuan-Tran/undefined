@@ -57,16 +57,22 @@
   }
 
   nav a.router-link-exact-active {
-    color: var(--color-text);
-  }
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid white;
+}
 
-  nav a.router-link-exact-active:hover {
-    background-color: transparent;
-  }
+nav a.router-link-exact-active:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
 
   nav a {
     display: inline-block;
     padding: 0 1rem;
+    color: white;
     border-left: 1px solid var(--color-border);
   }
 
