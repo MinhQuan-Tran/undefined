@@ -16,6 +16,7 @@
     "@capacitor/android": "^7.1.0",
     "@capacitor/core": "^7.1.0",
     "@capacitor/ios": "^7.1.0",
+    "@react-oauth/google": "^0.12.1",
     "pinia": "^3.0.1",
     "replate": "file:",
     "vue": "^3.5.13",

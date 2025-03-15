@@ -21,6 +21,11 @@ const router = createRouter({
       path: "/template",
       name: "template",
       component: () => import("../views/TemplateView.vue")
+    },
+    {
+      path: "/google",
+      name: "google",
+      component: () => import("../views/GoogleView.vue")
     }
   ]
 });
