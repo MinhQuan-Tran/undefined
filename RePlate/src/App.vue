@@ -43,9 +43,11 @@
 
   .logo {
     display: block;
-    margin: 0 auto 2rem;
+    margin-bottom: 1.5rem;
     border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
+
 
   nav {
     width: 100%;
