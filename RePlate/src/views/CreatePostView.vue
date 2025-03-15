@@ -12,20 +12,30 @@ const loadFile = (event: Event) => {
 </script>
 
 <template>
-  <div class="container" style="background-color: lightgoldenrodyellow">
+  <div class="container">
     <div class="create_post">
-      <h2 class="title" style="color: black; font-weight: 800">Make a Post:</h2>
+      <h2 class="title" style="color: black; font-weight: 800">Create a Listing:</h2>
       
       <label for="description" style="font-weight: 500; color: black">Description:</label>
-      <input type="text" placeholder="Describe your food product" name="description" required />
-      
+      <p></p>
+      <input type="text" style="height: 100px; width:400px; border: 10px; color: black;" placeholder="What do you have?" name="description" required />
+      <p style="font-size: x-small; color:black;">Ensure you list all allergens, quantity and any defects.</p>
       <p></p>
       <input type="file" accept="image/*" name="image" id="file" @change="loadFile" style="display: none;" />
-      <p><label for="file" style="cursor: pointer; font-weight: 500; color: black">Upload Image</label></p>
+      <p><label for="file" style="cursor: pointer; font-weight: 500; color: black; align-self: center;">Photo</label></p>
       <p v-if="imageUrl"><img :src="imageUrl" width="200" /></p>
 
       <p></p>
       <label for="location" style="font-weight: 500; color: black">Location:</label>
+      <!-- For later -->
+
+      <p></p>
+      <label for="expiry" style="font-weight: 500; color: black">Expiry:</label>
+      <input type="datetime-local" placeholder="What is the item's expiry?" style="height: 50px; width:auto; border: 10px;"/>
+
+      <p></p>
+      <button style="height: 40px; width:auto; background-color: grey; align-self: center;">POST</button>
+
     </div>
   </div>
 </template>
