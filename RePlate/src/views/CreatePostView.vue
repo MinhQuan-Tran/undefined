@@ -15,49 +15,122 @@ const loadFile = (event: Event) => {
   <div class="container">
     <div class="create_post">
       <h2 class="title">Create a Listing:</h2>
-      
-      <label for="description" style="font-weight: 500; color: black">Description:</label>
-      <p></p>
-      <input type="text" style="height: 100px; width:400px; border: 10px; color: black;" placeholder="What do you have?" name="description" required />
-      <p style="font-size: x-small; color:black;">Ensure you list all allergens, quantity and any defects.</p>
-      <p></p>
-      <input type="file" accept="image/*" name="image" id="file" @change="loadFile" style="display: none;" />
-      <p><label for="file" style="cursor: pointer; font-weight: 500; color: black; align-self: center;">Photo</label></p>
-      <p v-if="imageUrl"><img :src="imageUrl" width="200" /></p>
 
-      <p></p>
-      <label for="location" style="font-weight: 500; color: black">Location:</label>
-      <!-- For later -->
+      <label for="description">Description:</label>
+      <input
+        type="text"
+        class="input"
+        placeholder="What do you have?"
+        name="description"
+        required
+      />
+      <small style="color: black;">Ensure you list all allergens, quantity, and any defects.</small>
 
-      <p></p>
-      <label for="expiry" style="font-weight: 500; color: black">Expiry:</label>
-      <input type="datetime-local" placeholder="What is the item's expiry?" style="height: 50px; width:auto; border: 10px;"/>
+      <input
+        type="file"
+        accept="image/*"
+        name="image"
+        id="file"
+        @change="loadFile"
+        style="display: none;"
+      />
+      <label for="file" class="file_label">Upload Photo</label>
+      <p v-if="imageUrl"><img :src="imageUrl" class="uploaded_image" /></p>
 
-      <p></p>
-      <button style="height: 40px; width:auto; background-color: grey; align-self: center;">POST</button>
-      <!-- placeholder -->
+      <label for="location">Location:</label>
+      <!-- Placeholder -->
 
+      <label for="expiry">Expiry:</label>
+      <input
+        type="datetime-local"
+        class="input"
+        placeholder="What is the item's expiry?"
+      />
+
+      <button class="post_button">POST</button>
     </div>
   </div>
 </template>
 
-
 <style>
-@media (min-width: 1024px) {
-  .container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  .title {
-    color: forestgreen;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    justify-content: center;
-  }
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f9fafb;
+  font-family: 'Arial', sans-serif;
+}
+
+.title {
+  color: #2e8b57;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.create_post {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+label {
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.file_label {
+  display: inline-block;
+  background: #2e8b57;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.file_label:hover {
+  background: #1e6843;
+}
+
+.uploaded_image {
+  margin-top: 15px;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.post_button {
+  width: 100%;
+  padding: 10px;
+  background: #2e8b57;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.post_button:hover {
+  background: #1e6843;
 }
 </style>
-
