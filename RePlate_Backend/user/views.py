@@ -24,11 +24,12 @@ def google_auth(request):
         # Create or update user
         user, created = User.objects.get_or_create(username=email, defaults={"email": email, "first_name": name})
         if created:
+            user.user_type = "individual"  # Set default user type
             user.profile_picture = picture  # If you have a profile picture field
             user.save()
 
         token, _ = Token.objects.get_or_create(user=user)
 
-        return Response({"token": token.key, "email": user.email, "name": user.first_name, "profile_picture": picture, "created": created})
+        return Response({"token": token.key, "email": user.email, "name": user.first_name, "profile_picture": picture, "user_type": user.user_type})
     except Exception as e:
         return Response({"error": str(e)}, status=400)

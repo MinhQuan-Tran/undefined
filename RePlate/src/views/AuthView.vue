@@ -1,4 +1,7 @@
 <script>
+  import { mapStores } from "pinia";
+  import { useUserStore } from "@/stores/user";
+
   export default {
     data() {
       return {
@@ -6,9 +9,15 @@
         errors: []
       };
     },
+
+    computed: {
+      ...mapStores(useUserStore)
+    },
+
     mounted() {
       this.loadGoogleScript();
     },
+
     methods: {
       loadGoogleScript() {
         if (!window.google) {
@@ -42,24 +51,18 @@
           await this.sendTokenToBackend(response.credential);
         }
       },
+
       async sendTokenToBackend(token) {
         this.errors = [];
 
-        try {
-          const res = await fetch("http://127.0.0.1:8000/api/auth/google/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token })
+        this.userStore
+          .authUser(token)
+          .then(() => {
+            this.$router.push("/feed");
+          })
+          .catch((error) => {
+            this.errors = error.response.data.errors;
           });
-          const data = await res.json();
-          console.log("Authenticated:", data);
-
-          localStorage.setItem("access_token", data.access_token);
-          this.$router.push("/feed");
-        } catch (error) {
-          console.error("Error:", error);
-          this.errors.push("Failed to authenticate with Google");
-        }
       }
     }
   };
