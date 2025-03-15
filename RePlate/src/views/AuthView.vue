@@ -1,20 +1,9 @@
-<template>
-  <div>
-    <div
-      id="g_id_onload"
-      :data-client_id="clientId"
-      data-callback="handleCredentialResponse"
-      data-auto_prompt="false"
-    ></div>
-    <div class="g_id_signin" data-type="standard"></div>
-  </div>
-</template>
-
 <script>
   export default {
     data() {
       return {
-        clientId: "648036916024-0habpslihj4isq59snnglv8gd7vdip7l.apps.googleusercontent.com"
+        clientId: "648036916024-0habpslihj4isq59snnglv8gd7vdip7l.apps.googleusercontent.com",
+        errors: []
       };
     },
     mounted() {
@@ -33,6 +22,7 @@
           this.initGoogleSignIn();
         }
       },
+
       initGoogleSignIn() {
         if (window.google) {
           window.google.accounts.id.initialize({
@@ -45,6 +35,7 @@
           });
         }
       },
+
       async handleCredentialResponse(response) {
         console.log("Google response:", response);
         if (response.credential) {
@@ -52,6 +43,8 @@
         }
       },
       async sendTokenToBackend(token) {
+        this.errors = [];
+
         try {
           const res = await fetch("http://127.0.0.1:8000/api/auth/google/", {
             method: "POST",
@@ -60,10 +53,42 @@
           });
           const data = await res.json();
           console.log("Authenticated:", data);
+
+          localStorage.setItem("access_token", data.access_token);
+          this.$router.push("/feed");
         } catch (error) {
           console.error("Error:", error);
+          this.errors.push("Failed to authenticate with Google");
         }
       }
     }
   };
 </script>
+
+<template>
+  <div class="auth-view">
+    <h1>RePlate</h1>
+
+    <div
+      id="g_id_onload"
+      :data-client_id="clientId"
+      data-callback="handleCredentialResponse"
+      data-auto_prompt="false"
+    ></div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+    <div class="errors" v-if="errors.length">
+      <p v-for="error in errors" :key="error">{{ error }}</p>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+  .auth-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+</style>

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'user',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -75,7 +76,7 @@ CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 # Allow specific headers
 CORS_ALLOW_HEADERS = ["*"]
 
-CORS_ALLOW_ALL_ORIGINS = True
+AUTH_USER_MODEL = "user.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',

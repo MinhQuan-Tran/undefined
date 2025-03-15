@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <header v-if="['/', '/about'].includes($route.path)">
+  <header v-if="['/', '/about', '/auth'].includes($route.path)">
     <img alt="Vue logo" class="logo" src="@/assets/replate-logo.png" width="125" height="125" />
 
     <div class="wrapper">
@@ -13,6 +13,7 @@
       <nav>
         <RouterLink to="/">Homelalala</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/auth">Auth</RouterLink>
       </nav>
     </div>
   </header>
