@@ -4,19 +4,20 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
+  <header v-if="['/', '/login', '/signup'].includes($route.path)">
     <img alt="Vue logo" class="logo" src="@/assets/replate-logo.png" width="125" height="125" />
 
     <div class="wrapper">
       <HelloWorld msg="RePlate" />
 
       <nav>
-        <!-- <RouterLink to="/home">Homelalala</RouterLink> -->
         <RouterLink to="/">About</RouterLink>
         <RouterLink to="/login">Log In</RouterLink>
         <RouterLink to="/signup">Sign Up</RouterLink>
       </nav>
     </div>
+
+    
   </header>
 
   <RouterView />
