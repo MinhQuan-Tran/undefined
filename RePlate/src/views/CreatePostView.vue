@@ -19,7 +19,10 @@ const loadFile = (event: Event) => {
       <label for="description" style="font-weight: 500; color: black">Description:</label>
       <p></p>
       <input type="text" style="height: 100px; width:400px; border: 10px; color: black;" placeholder="What do you have?" name="description" required />
-      <p style="font-size: x-small; color:black;">Ensure you list all allergens, quantity and any defects.</p>
+      <p style="font-size: x-small; color:black;">Ensure you list all allergens and any defects.</p>
+      <p></p>
+      <label for="Quantity" style="font-weight: 500; color: black">Quantity:</label>
+      <input type="number">
       <p></p>
       <input type="file" accept="image/*" name="image" id="file" @change="loadFile" style="display: none;" />
       <p><label for="file" style="cursor: pointer; font-weight: 500; color: black; align-self: center;">Photo</label></p>
@@ -46,6 +49,7 @@ const loadFile = (event: Event) => {
 @media (min-width: 1024px) {
   .container {
     min-height: 100vh;
+    background-color: #eeee;
     display: flex;
     flex-direction: column;
     align-items: center;
