@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useGeolocation } from '@vueuse/core'
+import type { list } from 'postcss'
 import {ref, computed} from 'vue'
 
 const { coords } = useGeolocation() //holds users current lat and long
-const searchRadius = ref(5) //reactive variable that holds distance of valid post radius
+const searchRadius = ref<number>(5) //reactive variable that holds distance of valid post radius
 const posts = ref([]) //reactive variable that stores all available posts (empty init)
 
 const availablePosts = computed(() => {
@@ -32,7 +33,7 @@ function HaversineDistance(lat1:number, lon1:number, lat2:number, lon2:number) {
   return R * c; // Distance in kilometers
 }
 
-function filterPosts(userLat, userLng, posts, searchRadius) {
+function filterPosts(userLat:number, userLng:number, posts:Array<>, searchRadius:number) {
   return posts.filter(post => {
     const distance = HaversineDistance(
       userLat, 
@@ -43,6 +44,12 @@ function filterPosts(userLat, userLng, posts, searchRadius) {
     
     return distance <= searchRadius;
   });
+}
+
+function loadPosts() {
+  // Example: fetch posts from API
+  // const response = await fetch('/api/posts');
+  // allPosts.value = await response.json();
 }
 
 console.log(coords.value.latitude, coords.value.longitude)
