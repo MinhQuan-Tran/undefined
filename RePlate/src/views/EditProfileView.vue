@@ -1,7 +1,8 @@
 <template>
     <div class="profile-container">
       <div class="profile-card">
-        <img :src="user.avatar" alt="Profile Picture" class="profile-pic" />
+        <img :src="user.avatar" alt="Profile Picture" class="profile-pic" @click="fileInput.click()" />
+        <input type="file" ref="fileInput" accept="image/*" style="display: none" @change="updateProfilePicture"/>
         <h2>{{ user.name }}</h2>
         <p class="category">{{ user.category }}</p>
   
@@ -16,8 +17,11 @@
           <input v-model="user.phone" placeholder="Phone Number" />
           <label>Join Date</label>
           <input v-model="user.join" placeholder="Join Date" />
+        </div>
   
-          <button class="save-btn" @click="saveProfile">Save</button>
+        <div class="button-group">
+          <button class="btn save-btn" @click="saveProfile">Save</button>
+          <button class="btn cancel-btn" @click="$router.push('/profile')">Cancel</button>
         </div>
       </div>
     </div>
@@ -33,11 +37,32 @@
           category: "",
           location: "",
           phone: "",
-          join: ""
+          join: "",
+          avatar: '/src/assets/profile-icon.png'
         }
       };
     },
     created() {
+      const savedUser = localStorage.getItem("userProfile");
+      if (savedUser) {
+        this.user = JSON.parse(savedUser);
+      }
+    },
+    methods: {
+      saveProfile() {
+        localStorage.setItem("userProfile", JSON.stringify(this.user));
+        this.$router.push("/profile");
+      },
+      updateProfilePicture(event) {
+        if (event.target.files[0]) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.user.avatar = reader.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    }
     const savedUser = localStorage.getItem("userProfile");
     if (savedUser) {
       this.user = JSON.parse(savedUser);
@@ -59,16 +84,16 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #f4f4f4;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
   }
   
   .profile-card {
-    width: 350px;
-    padding: 25px;
+    width: 400px;
+    padding: 30px;
     text-align: center;
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease-in-out;
   }
   
@@ -81,61 +106,44 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #42b983;
+    border: 2px solid #000000;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer; /* Indicating it's clickable */
+  }
+  
+  .profile-pic:hover {
+    transform: scale(1.08);
   }
   
   h2 {
-    margin: 10px 0;
-    font-size: 22px;
+    margin-top: 15px;
+    font-size: 24px;
     color: #333;
   }
   
   .category {
     font-size: 16px;
-    color: #666;
+    color: #555;
     font-weight: bold;
-  }
-  
-  .location, .phone, .join {
-    font-size: 14px;
-    color: #444;
-    margin: 5px 0;
-  }
-  
-  button {
-    margin-top: 15px;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 6px;
-    background: #42b983;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  button:hover {
-    background: #369d77;
   }
   
   .edit-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 20px;
     text-align: left;
   }
   
   .edit-form label {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 14px;
     color: #444;
   }
   
   .edit-form input {
-    padding: 8px;
-    border-radius: 5px;
+    padding: 10px;
+    border-radius: 8px;
     border: 1px solid #ccc;
     width: 100%;
     transition: border 0.3s;
@@ -146,19 +154,42 @@
     outline: none;
   }
   
+  .button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .btn {
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
   .save-btn {
-    background: #007bff;
+    background: #42b983;
+    color: white;
   }
   
   .save-btn:hover {
-    background: #0056b3;
+    background: #369d77;
+    transform: translateY(-2px);
   }
-
-  .other-btn {
-    background: #ffffff;
+  
+  .cancel-btn {
+    background: #ff6b6b;
+    color: white;
   }
-  .other-btn {
-    background: #d4d3d3;
+  
+  .cancel-btn:hover {
+    background: #e74c3c;
+    transform: translateY(-2px);
   }
   </style>
   
