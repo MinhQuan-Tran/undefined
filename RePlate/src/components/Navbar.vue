@@ -31,6 +31,7 @@
             class="profile-picture size-6"
             :src="userStore.profilePicture"
             alt="Profile picture"
+            loading="lazy"
           />
           <svg
             v-else

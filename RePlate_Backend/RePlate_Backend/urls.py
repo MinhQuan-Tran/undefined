@@ -18,13 +18,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from user.views import google_auth
+from user.views import google_auth, get_user_data
 from post.views import list_posts, create_post, get_post, delete_post, list_comments, create_comment, reply_to_comment, delete_comment
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/auth/google/', google_auth, name="google_auth"),
+    path('api/user/', get_user_data, name="get_user_data"),
 
     path('posts/', list_posts, name='list_posts'),
     path('posts/create/', create_post, name='create_post'),
