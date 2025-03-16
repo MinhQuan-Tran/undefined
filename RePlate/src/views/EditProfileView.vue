@@ -1,24 +1,24 @@
 <template>
   <div class="profile-container">
     <div class="profile-card">
-      <img :src="user.avatar" alt="Profile Picture" class="profile-pic" @click="fileInput.click()" />
+      <img :src="userStore.profilePicture" alt="Profile Picture" class="profile-pic" @click="fileInput.click()" />
       <input type="file" ref="fileInput" accept="image/*" style="display: none" @change="updateProfilePicture" />
-      <h2>{{ user.name }}</h2>
-      <p class="category">{{ user.category }}</p>
+      <h2>{{ userStore.name }}</h2>
+      <p class="category">{{ userStore.category }}</p>
 
       <div class="edit-form">
         <label>Username</label>
-        <input v-model="user.name" placeholder="Username" />
+        <input v-model="userStore.name" placeholder="Username" />
         <label>User Type</label>
-        <input v-model="user.userType" placeholder="User Type" />
+        <input v-model="userStore.userType" placeholder="User Type" />
         <label>Location</label>
-        <input v-model="user.location" placeholder="Location" />
+        <input v-model="userStore.location" placeholder="Location" />
         <!-- <label>Phone Number</label>
         <input v-model="user.phone" placeholder="Phone Number" /> -->
         <label>Join Date</label>
-        <input v-model="user.join" placeholder="Join Date" />
+        <input v-model="userStore.createdAt" placeholder="Join Date" />
         <label>Rating</label>
-        <input v-model="user.rating" placeholder="Rating" disabled />
+        <input v-model="userStore.rating" placeholder="Rating" disabled />
       </div>
 
       <div class="button-group">
@@ -36,25 +36,19 @@
   export default {
     data() {
       return {
-        user: {
-          name: this.userStore.name,
-          userType: this.userStore.userType,
-          location: "",
-          phone: "",
-          join: this.userStore.createdAt,
-          rating: this.userStore.rating ? this.userStore.rating + "/5" : "N/A",
-          avatar: "/src/assets/profile-icon.png"
-        }
+        // user: {
+        //   name: this.userStore.name,
+        //   userType: this.userStore.userType,
+        //   location: "",
+        //   phone: "",
+        //   join: this.userStore.createdAt,
+        //   rating: this.userStore.rating ? this.userStore.rating + "/5" : "N/A",
+        //   avatar: "/src/assets/profile-icon.png"
+        // }
       };
     },
     computed: {
       ...mapStores(useUserStore)
-    },
-    created() {
-      const savedUser = localStorage.getItem("userProfile");
-      if (savedUser) {
-        this.user = JSON.parse(savedUser);
-      }
     },
     methods: {
       saveProfile() {
