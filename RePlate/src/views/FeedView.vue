@@ -64,7 +64,7 @@ export default {
 <script setup lang="ts">
 const posts = ref([
   { id: 1, title: "Box of Pears", description: "Fresh pears available! Atleast 15, must be picked up by tomorrow", image: new URL('@/assets/Pears.jpg', import.meta.url).href, location: "Melbourne", expiry: "17/03/2025 11:00:AM"},
-  { id: 2, title: "Hokkein Noodles", description: "Yummy hokkein noodles available until late tonight.", image: new URL("@/assets/hokkeinnoodles.jpg", import.meta.url).href, location: "Melbourne", expiry: "17/03/2025 11:00:PM" },
+  { id: 2, title: "Hokkein Noodles", description: "Yummy hokkein noodles available until late tonight. Contains sesame", image: new URL("@/assets/hokkeinnoodles.jpg", import.meta.url).href, location: "Melbourne", expiry: "17/03/2025 11:00:PM" },
   { id: 3, title: "Leftover Greek", description: "Leftover Greek food, available until Tuesday", image: new URL("@/assets/LeftoverGreek.jpg", import.meta.url).href, location: "Echuca", expiry: "19/03/2025 05:00:PM" },
 ]);
 </script>
@@ -172,98 +172,3 @@ const posts = ref([
 }
 </style>
 
-
-
-<!-- <script lang="ts">
-import { ref } from "vue";
-import CreatePostView from "./CreatePostView.vue";
-import CreateRequestView from "./CreateRequestView.vue";
-import SocialFeed from "./SocialFeed.vue";
-
-export default {
-  components: {
-    CreatePostView,
-    CreateRequestView,
-    SocialFeed,
-  },
-  data() {
-    return {
-      showPostModal: false, // Controls visibility for CreatePostView modal
-      showRequestModal: false, // Controls visibility for CreateRequestView modal
-      showFeed: true,
-    };
-  },
-};
-</script>
-
-<template>
-  <div class="sidebar">
-    <button @click="showPostModal = true" style="color: darkolivegreen; font-size: x-large;">Share Food</button>
-    <button @click="showRequestModal = true" style="color: darkolivegreen; font-size: x-large;">Request Food</button>
-    <button @click="showFeed = true" style="color: darkolivegreen; font-size: x-large;">Show Feed</button>
-
-     Create Post Modal -->
-    <!-- <div v-if="showPostModal" class="modal">
-      <div class="modal-content">
-        <CreatePostView />
-        <button @click="showPostModal = false" class="close-button">Close</button>
-      </div>
-    </div>
-    Create Request Modal -->
-    <!-- <div v-if="showRequestModal" class="modal">
-      <div class="modal-content">
-  
-        <CreateRequestView />
-        <button @click="showRequestModal = false" class="close-button">Close</button>
-        
-      </div>
-    </div>
-
-    <div v-if="showFeed" class="modal">
-      <div class="modal-content">
-        <SocialFeedView />
-        <button @click="showFeed = false" class="close-button">Close</button>
-      </div>
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-self: left;
-}
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: auto;
-}
-
-.modal-content {
-  background-color: rgb(245, 245, 229);
-  padding: 20px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-}
-
-.close-button {
-  background-color: burlywood;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-</style> -->
