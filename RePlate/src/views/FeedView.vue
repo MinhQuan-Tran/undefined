@@ -49,8 +49,7 @@ export default {
   },
   unmounted() {
     document.removeEventListener('keydown', this.handleEscape);
-  }
-};
+  }}
 </script>
 
 <template>
@@ -89,11 +88,11 @@ export default {
               <span class="meta-icon">⏱️</span>
               <span>{{ post.expiry }}</span>
             </div>
+            <button class="collect-btn">Collect</button>
           </div>
         </div>
       </div>
     </div>
-
     <!-- Create Post Modal -->
     <transition name="fade">
       <div v-if="showPostModal" class="modal-overlay" @click="handleOutsideClick">
@@ -405,5 +404,16 @@ body.modal-open {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.collect-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 </style>
