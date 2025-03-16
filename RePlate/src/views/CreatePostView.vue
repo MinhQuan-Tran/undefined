@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useGeolocation } from '@vueuse/core'
 
+const { coords } = useGeolocation()
 const imageUrl = ref<string | null>(null);
 
 const loadFile = (event: Event) => {
@@ -37,8 +39,18 @@ const loadFile = (event: Event) => {
       <label for="file" class="file_label">Upload Photo</label>
       <p v-if="imageUrl"><img :src="imageUrl" class="uploaded_image" /></p>
 
-      <label for="location">Location:</label>
-      <!-- Placeholder -->
+
+      <div class="display-location">
+        <label for="location">Location:</label>
+      <p v-if="coords.latitude!== Infinity && coords.longitude!== Infinity">
+      Latitude: {{coords.latitude}}
+      <br>
+      Longitude: {{coords.longitude}}
+      </p>
+      <p v-else>
+      Locating...
+      </p>
+      </div>
 
       <label for="expiry">Expiry:</label>
       <input

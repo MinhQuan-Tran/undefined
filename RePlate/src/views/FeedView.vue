@@ -59,6 +59,9 @@ export default {
       </div>
     </div>
   </div>
+  <!-- <div class="right-side" >
+    Hello
+  </div> -->
 </template>
 
 <script setup lang="ts">
