@@ -7,6 +7,9 @@ from rest_framework.authtoken.models import Token
 from django.conf import settings
 import os
 
+from google.auth.transport.requests import Request
+import requests
+
 User = get_user_model()
 
 @api_view(['POST'])
@@ -16,6 +19,8 @@ def google_auth(request):
         return Response({"error": "Token is required"}, status=400)
 
     try:
+        request_session = requests.Session()
+        request_session.timeout = 10  # Set timeout to 10 seconds
         # Verify Google token
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.getenv("GOOGLE_CLIENT_ID"))
 
