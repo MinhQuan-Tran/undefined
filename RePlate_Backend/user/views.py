@@ -62,13 +62,18 @@ def get_user_data(request):
     token_key = auth_header.split(" ")[1]
     try:
         token = Token.objects.get(key=token_key)
-        user = token.user  # Get user linked to token
+        user = User.objects.filter(id=token.user.id).first()
+
+        if not user:
+            return Response({"error": "User not found"}, status=404)
+
         return Response({
             "name": user.get_full_name() or user.username,
             "email": user.email,
             "profile_picture": user.profile_picture if isinstance(user.profile_picture, str) else None,
             "user_type": getattr(user, "user_type", "user"),
-            "rating": getattr(user, "rating", 0)
+            "rating": getattr(user, "rating", 0),
+            "created_at": user.created_at
         })
     except Token.DoesNotExist:
         return Response({"error": "Invalid token"}, status=401)

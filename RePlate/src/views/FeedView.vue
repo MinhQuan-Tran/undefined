@@ -1,55 +1,142 @@
 <script lang="ts">
-import { ref } from "vue";
-import CreatePostView from "./CreatePostView.vue";
-import CreateRequestView from "./CreateRequestView.vue";
+  import { ref } from "vue";
+  import CreatePostView from "./CreatePostView.vue";
+  import CreateRequestView from "./CreateRequestView.vue";
 
-export default {
-  components: {
-    CreatePostView,
-    CreateRequestView,
-  },
-  data() {
-    return {
-      showPostModal: false,
-      showRequestModal: false,
-    };
-  },
-  methods: {
-    closePostModal() {
-      this.showPostModal = false;
-      document.body.classList.remove('modal-open');
+  export default {
+    components: {
+      CreatePostView,
+      CreateRequestView
     },
-    closeRequestModal() {
-      this.showRequestModal = false;
-      document.body.classList.remove('modal-open');
+    data() {
+      return {
+        showPostModal: false,
+        showRequestModal: false,
+        locationCache: {} as Record<string, string>, // Caching locations
+        posts: [] as {
+          id: number;
+          description: string;
+          imageUrls: string[];
+          location: string;
+          expireAt: string;
+        }[],
+        loading: true // Added loading state
+      };
     },
-    openPostModal() {
-      this.showPostModal = true;
-      document.body.classList.add('modal-open');
-    },
-    openRequestModal() {
-      this.showRequestModal = true;
-      document.body.classList.add('modal-open');
-    },
-    handleEscape(event) {
-      if (event.key === 'Escape') {
-        if (this.showPostModal) this.closePostModal();
-        if (this.showRequestModal) this.closeRequestModal();
+    methods: {
+      closePostModal() {
+        this.showPostModal = false;
+        document.body.classList.remove("modal-open");
+      },
+      closeRequestModal() {
+        this.showRequestModal = false;
+        document.body.classList.remove("modal-open");
+      },
+      openPostModal() {
+        this.showPostModal = true;
+        document.body.classList.add("modal-open");
+      },
+      openRequestModal() {
+        this.showRequestModal = true;
+        document.body.classList.add("modal-open");
+      },
+      handleEscape(event) {
+        if (event.key === "Escape") {
+          if (this.showPostModal) this.closePostModal();
+          if (this.showRequestModal) this.closeRequestModal();
+        }
+      },
+      handleOutsideClick(event) {
+        if (event.target.classList.contains("modal-overlay")) {
+          if (this.showPostModal) this.closePostModal();
+          if (this.showRequestModal) this.closeRequestModal();
+        }
+      },
+      async getLocationName(latitude: number, longitude: number) {
+        try {
+          const cacheKey = `${latitude},${longitude}`;
+          if (this.locationCache[cacheKey]) {
+            return this.locationCache[cacheKey];
+          }
+
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+
+          if (!response.ok) throw new Error("Failed to fetch location");
+
+          const data = await response.json();
+          const address = data.display_name;
+
+          if (!address) throw new Error("Invalid location data");
+
+          return address;
+        } catch (error) {
+          console.error("Error fetching location:", error);
+          return "Unknown Location";
+        }
+      },
+
+      async parseLocation(location: string) {
+        try {
+          if (typeof location === "string" && !location.includes("{")) {
+            return location; // Already formatted
+          }
+
+          const loc = JSON.parse(location);
+          if (!loc.latitude || !loc.longitude) throw new Error("Invalid coordinates");
+
+          return await this.getLocationName(loc.latitude, loc.longitude);
+        } catch (error) {
+          console.error("Error parsing location:", error);
+          return location; // Fallback to original string
+        }
       }
     },
-    handleOutsideClick(event) {
-      if (event.target.classList.contains('modal-overlay')) {
-        if (this.showPostModal) this.closePostModal();
-        if (this.showRequestModal) this.closeRequestModal();
+    async mounted() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/posts/");
+        if (!response.ok) throw new Error("Failed to fetch posts");
+
+        const data = await response.json();
+
+        // Use Promise.all to resolve all async operations
+        this.posts = await Promise.all(
+          data.map(
+            async (post: {
+              id: number;
+              author: string;
+              description: string;
+              location: string;
+              quantity: number;
+              expire_at: string;
+              created_at: string;
+              image_urls: string[];
+            }) => ({
+              id: post.id,
+              author: post.author,
+              description: post.description,
+              location: await this.parseLocation(post.location),
+              quantity: post.quantity,
+              expireAt: post.expire_at,
+              createdAt: post.created_at,
+              imageUrls: post.image_urls.map((url) => `http://127.0.0.1:8000${url}`)
+            })
+          )
+        );
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        this.loading = false; // Set loading to false after fetching
       }
+    },
+    mounted() {
+      document.addEventListener("keydown", this.handleEscape);
+    },
+    unmounted() {
+      document.removeEventListener("keydown", this.handleEscape);
     }
-  },
-  mounted() {
-    document.addEventListener('keydown', this.handleEscape);
-  },
-  unmounted() {
-    document.removeEventListener('keydown', this.handleEscape);
-  }}
+  };
 </script>
 
 <template>
@@ -71,13 +158,18 @@ export default {
 
     <!-- Social Feed Section -->
     <div class="feed">
-      <h2 class="feed-title">Social Feed</h2>
+      <h2 class="feed_title">Social Feed</h2>
+      <!-- Show loading screen while fetching -->
+      <div v-if="loading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading posts...</p>
+      </div>
       <div class="feed-posts">
-        <div v-for="post in posts" :key="post.id" class="post-card">
-          <h3 class="post-title">{{ post.title }}</h3>
+        <div v-for="post in posts" :key="post.id" class="post_card">
           <div class="image-container">
-            <img :src="post.image" :alt="`Image of ${post.title}`" class="post-image" />
+            <img :src="post.image" :alt="`Image of ${post.title}`" class="post_image" />
           </div>
+          <h3 style="font-size: large; font-weight: bold">{{ post.title }}</h3>
           <p class="post-text">{{ post.description }}</p>
           <div class="post-meta">
             <div class="meta-item">
@@ -90,6 +182,7 @@ export default {
             </div>
             <button class="collect-btn">Collect</button>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -132,15 +225,13 @@ export default {
   </div>
 </template>
 
-<script setup lang="ts">
-const posts = ref([
-  { id: 1, title: "Box of Pears", description: "Fresh pears available! At least 15, must be picked up by tomorrow", image: new URL('@/assets/Pears.jpg', import.meta.url).href, location: "Melbourne", expiry: "17/03/2025 11:00 AM"},
-  { id: 2, title: "Hokkien Noodles", description: "Yummy Hokkien noodles available until late tonight. Contains sesame", image: new URL("@/assets/hokkeinnoodles.jpg", import.meta.url).href, location: "Melbourne", expiry: "17/03/2025 11:00 PM" },
-  { id: 3, title: "Leftover Greek", description: "Leftover Greek food, available until Tuesday", image: new URL("@/assets/LeftoverGreek.jpg", import.meta.url).href, location: "Echuca", expiry: "19/03/2025 05:00 PM" },
-]);
-</script>
-
 <style scoped>
+  /* Layout Styles */
+  .layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f9fafb;
+  }
 /* Layout Styles */
 .layout {
   display: flex;
@@ -149,6 +240,15 @@ const posts = ref([
   font-family: 'Roboto', sans-serif;
 }
 
+  /* Sidebar Styles */
+  .sidebar {
+    width: 20%;
+    background: #ffffff;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+  }
 /* Sidebar Styles */
 .sidebar {
   width: 25%;
@@ -174,6 +274,18 @@ const posts = ref([
   font-size: 1.8rem;
 }
 
+  .sidebar_button {
+    background: #2e8b57;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
 .sidebar-button {
   background: #4caf50;
   color: white;
@@ -197,6 +309,9 @@ const posts = ref([
   font-size: 18px;
 }
 
+  .sidebar_button:hover {
+    background: #1e6843;
+  }
 .sidebar-button:hover {
   background: #388e3c;
   transform: translateY(-2px);
@@ -300,6 +415,19 @@ const posts = ref([
   margin-right: 6px;
 }
 
+  /* Modal Styles */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+  }
 /* Modal Styles */
 body.modal-open {
   overflow: hidden;
@@ -319,6 +447,16 @@ body.modal-open {
   z-index: 1000;
 }
 
+  .modal-content {
+    background-color: rgb(245, 245, 229);
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
 .modal-container {
   background-color: #ffffff;
   width: 90%;
@@ -331,43 +469,40 @@ body.modal-open {
   max-height: 90vh;
 }
 
-.modal-header {
-  background: linear-gradient(90deg, #4caf50, #8bc34a);
-  color: white;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .close-button {
+    background-color: burlywood;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 
-.modal-title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
+  /* Feed Section Styles */
+  .feed {
+    width: 80%;
+    padding: 20px;
+    overflow-y: auto;
+    color: black;
+    font-size: medium;
+  }
 
-.modal-close {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 28px;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-  transition: transform 0.2s ease;
-}
+  .feed_title {
+    color: #2e8b57;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
 
-.modal-close:hover {
-  transform: scale(1.2);
-}
-
-.modal-body {
-  padding: 24px;
-  overflow-y: auto;
-  max-height: 60vh;
-}
-
+  .post_card {
+    background: beige;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 .modal-footer {
   padding: 16px 24px;
   display: flex;
@@ -401,19 +536,42 @@ body.modal-open {
   transition: opacity 0.3s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+  }
+  .image-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 
-.collect-btn {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
+  /* Loading Screen */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    font-size: 1.2rem;
+    color: #2e8b57;
+  }
+
+  /* Spinner Animation */
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #d3d3d3;
+    border-top: 5px solid #2e8b57;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 </style>
+
