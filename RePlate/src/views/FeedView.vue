@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { ref } from "vue";
   import CreatePostView from "./CreatePostView.vue";
   import CreateRequestView from "./CreateRequestView.vue";
 
@@ -15,6 +14,7 @@
         locationCache: {} as Record<string, string>, // Caching locations
         posts: [] as {
           id: number;
+          title: string;
           description: string;
           imageUrls: string[];
           location: string;
@@ -40,13 +40,13 @@
         this.showRequestModal = true;
         document.body.classList.add("modal-open");
       },
-      handleEscape(event) {
+      handleEscape(event: any) {
         if (event.key === "Escape") {
           if (this.showPostModal) this.closePostModal();
           if (this.showRequestModal) this.closeRequestModal();
         }
       },
-      handleOutsideClick(event) {
+      handleOutsideClick(event: any) {
         if (event.target.classList.contains("modal-overlay")) {
           if (this.showPostModal) this.closePostModal();
           if (this.showRequestModal) this.closeRequestModal();
@@ -106,6 +106,7 @@
             async (post: {
               id: number;
               author: string;
+              title: string;
               description: string;
               location: string;
               quantity: number;
@@ -115,6 +116,7 @@
             }) => ({
               id: post.id,
               author: post.author,
+              title: post.title,
               description: post.description,
               location: await this.parseLocation(post.location),
               quantity: post.quantity,
@@ -129,8 +131,6 @@
       } finally {
         this.loading = false; // Set loading to false after fetching
       }
-    },
-    mounted() {
       document.addEventListener("keydown", this.handleEscape);
     },
     unmounted() {
@@ -165,9 +165,9 @@
         <p>Loading posts...</p>
       </div>
       <div class="feed-posts">
-        <div v-for="post in posts" :key="post.id" class="post_card">
+        <div v-for="post in posts" :key="post.id" class="post-card">
           <div class="image-container">
-            <img :src="post.image" :alt="`Image of ${post.title}`" class="post_image" />
+            <img v-for="url in post.imageUrls" :src="url" alt="Image" class="post-image" />
           </div>
           <h3 style="font-size: large; font-weight: bold">{{ post.title }}</h3>
           <p class="post-text">{{ post.description }}</p>
@@ -178,14 +178,14 @@
             </div>
             <div class="meta-item">
               <span class="meta-icon">⏱️</span>
-              <span>{{ post.expiry }}</span>
+              <span>{{ post.expireAt }}</span>
             </div>
             <button class="collect-btn">Collect</button>
           </div>
         </div>
-        </div>
       </div>
     </div>
+
     <!-- Create Post Modal -->
     <transition name="fade">
       <div v-if="showPostModal" class="modal-overlay" @click="handleOutsideClick">
@@ -232,13 +232,13 @@
     min-height: 100vh;
     background-color: #f9fafb;
   }
-/* Layout Styles */
-.layout {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f8f9f4;
-  font-family: 'Roboto', sans-serif;
-}
+  /* Layout Styles */
+  .layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9f4;
+    font-family: "Roboto", sans-serif;
+  }
 
   /* Sidebar Styles */
   .sidebar {
@@ -249,30 +249,30 @@
     display: flex;
     flex-direction: column;
   }
-/* Sidebar Styles */
-.sidebar {
-  width: 25%;
-  background: linear-gradient(135deg, #d7e9ca, #e8f5e9);
-  padding: 20px;
-  border-right: 1px solid #c5e1a5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  /* Sidebar Styles */
+  .sidebar {
+    width: 25%;
+    background: linear-gradient(135deg, #d7e9ca, #e8f5e9);
+    padding: 20px;
+    border-right: 1px solid #c5e1a5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-.sidebar-content {
-  position: sticky;
-  top: 20px;
-  width: 100%;
-}
+  .sidebar-content {
+    position: sticky;
+    top: 20px;
+    width: 100%;
+  }
 
-.sidebar-title {
-  color: #2e7d32;
-  text-align: center;
-  margin-bottom: 30px;
-  font-weight: 700;
-  font-size: 1.8rem;
-}
+  .sidebar-title {
+    color: #2e7d32;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
 
   .sidebar_button {
     background: #2e8b57;
@@ -286,134 +286,134 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-.sidebar-button {
-  background: #4caf50;
-  color: white;
-  padding: 14px 20px;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 18px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+  .sidebar-button {
+    background: #4caf50;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
 
-.button-icon {
-  margin-right: 10px;
-  font-size: 18px;
-}
+  .button-icon {
+    margin-right: 10px;
+    font-size: 18px;
+  }
 
   .sidebar_button:hover {
     background: #1e6843;
   }
-.sidebar-button:hover {
-  background: #388e3c;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+  .sidebar-button:hover {
+    background: #388e3c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 
-.sidebar-button:active {
-  transform: translateY(0);
-}
+  .sidebar-button:active {
+    transform: translateY(0);
+  }
 
-/* Feed Section Styles */
-.feed {
-  width: 75%;
-  padding: 30px;
-  overflow-y: auto;
-  color: #33691e;
-  background: #ffffff;
-}
+  /* Feed Section Styles */
+  .feed {
+    width: 75%;
+    padding: 30px;
+    overflow-y: auto;
+    color: #33691e;
+    background: #ffffff;
+  }
 
-.feed-title {
-  color: #2e7d32;
-  font-size: 2rem;
-  margin-bottom: 30px;
-  font-weight: 700;
-  border-bottom: 2px solid #c5e1a5;
-  padding-bottom: 10px;
-}
+  .feed-title {
+    color: #2e7d32;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+    border-bottom: 2px solid #c5e1a5;
+    padding-bottom: 10px;
+  }
 
-.feed-posts {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+  .feed-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
 
-.post-card {
-  background: #f1f8e9;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+  .post-card {
+    background: #f1f8e9;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-}
+  .post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  }
 
-.post-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #33691e;
-  margin-bottom: 16px;
-}
+  .post-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #33691e;
+    margin-bottom: 16px;
+  }
 
-.image-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
-  overflow: hidden;
-  border-radius: 12px;
-}
+  .image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+    overflow: hidden;
+    border-radius: 12px;
+  }
 
-.post-image {
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  border-radius: 12px;
-  transition: transform 0.3s ease;
-}
+  .post-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+  }
 
-.post-image:hover {
-  transform: scale(1.03);
-}
+  .post-image:hover {
+    transform: scale(1.03);
+  }
 
-.post-text {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #33691e;
-  margin-bottom: 16px;
-}
+  .post-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #33691e;
+    margin-bottom: 16px;
+  }
 
-.post-meta {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 0.9rem;
-  color: #558b2f;
-}
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: #558b2f;
+  }
 
-.meta-item {
-  display: flex;
-  align-items: center;
-  background: #e8f5e9;
-  padding: 6px 12px;
-  border-radius: 20px;
-}
+  .meta-item {
+    display: flex;
+    align-items: center;
+    background: #e8f5e9;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
 
-.meta-icon {
-  margin-right: 6px;
-}
+  .meta-icon {
+    margin-right: 6px;
+  }
 
   /* Modal Styles */
   .modal {
@@ -428,24 +428,24 @@
     justify-content: center;
     overflow: auto;
   }
-/* Modal Styles */
-body.modal-open {
-  overflow: hidden;
-}
+  /* Modal Styles */
+  body.modal-open {
+    overflow: hidden;
+  }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
 
   .modal-content {
     background-color: rgb(245, 245, 229);
@@ -457,17 +457,17 @@ body.modal-open {
     flex-direction: column;
     overflow: auto;
   }
-.modal-container {
-  background-color: #ffffff;
-  width: 90%;
-  max-width: 550px;
-  border-radius: 16px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-height: 90vh;
-}
+  .modal-container {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 550px;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+  }
 
   .close-button {
     background-color: burlywood;
@@ -503,40 +503,39 @@ body.modal-open {
     flex-direction: column;
     align-items: center;
   }
-.modal-footer {
-  padding: 16px 24px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  background-color: #f1f8e9;
-  border-top: 1px solid #e0e0e0;
-}
-
-.modal-button {
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cancel-button {
-  background-color: transparent;
-  color: #4caf50;
-  border: 1px solid #4caf50;
-}
-
-.cancel-button:hover {
-  background-color: #e8f5e9;
-}
-
-/* Transitions */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
+  .modal-footer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: #f1f8e9;
+    border-top: 1px solid #e0e0e0;
   }
+
+  .modal-button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .cancel-button {
+    background-color: transparent;
+    color: #4caf50;
+    border: 1px solid #4caf50;
+  }
+
+  .cancel-button:hover {
+    background-color: #e8f5e9;
+  }
+
+  /* Transitions */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
   .image-container {
     display: flex;
     flex-direction: row;
@@ -573,5 +572,90 @@ body.modal-open {
       transform: rotate(360deg);
     }
   }
-</style>
 
+  .modal-header {
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .modal-close:hover {
+    transform: scale(1.2);
+  }
+
+  .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    max-height: 60vh;
+  }
+
+  .modal-footer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: #f1f8e9;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .modal-button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .cancel-button {
+    background-color: transparent;
+    color: #4caf50;
+    border: 1px solid #4caf50;
+  }
+
+  .cancel-button:hover {
+    background-color: #e8f5e9;
+  }
+
+  /* Transitions */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .collect-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+</style>

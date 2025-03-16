@@ -10,6 +10,7 @@
   const imageFile = ref<File | null>(null); //
 
   // Add reactive state for all form fields
+  const title = ref("");
   const description = ref("");
   const location = ref("");
   const expireAt = ref("");
@@ -27,11 +28,21 @@
     }
   }
 
+  function removeImage() {
+    imageFiles.value = [];
+    imagePreviews.value = [];
+  }
+
+  function formatCoordinates(coord: number) {
+    return coord.toFixed(6);
+  }
+
   async function handlePost() {
     try {
       const formData = new FormData();
 
       // Add text fields (JSON data)
+      formData.append("title", title.value);
       formData.append("description", description.value);
       formData.append("expire_at", expireAt.value);
       formData.append("quantity", quantity.value.toString());
@@ -80,54 +91,120 @@
 
 <template>
   <div class="container">
-    <div class="create_post">
-      <h2 class="title">Create a Listing:</h2>
-      <form @submit.prevent="handlePost">
-        //creation of form to submit
-
-        <label for="description">Description:</label>
+    <form @submit.prevent="handlePost">
+      <div class="form-group">
+        <label for="title" class="form-label">Food Title</label>
         <input
           type="text"
-          class="input"
-          placeholder="What do you have?"
-          name="description"
-          v-model="description"
+          id="title"
+          v-model="title"
+          class="form-input"
+          placeholder="e.g. Fresh Vegetables, Homemade Pasta"
           required
         />
-        <small style="color: black">Ensure you list all allergens, quantity, and any defects.</small>
+      </div>
 
-        <input
-          type="file"
-          accept="image/*"
-          name="images"
-          id="file"
-          multiple
-          @change="loadFiles"
-          style="display: none"
-        />
-        <label for="file" class="file_label">Upload Photo</label>
-        <div v-if="imagePreviews.length">
-          <p v-for="(image, index) in imagePreviews" :key="index">
-            <img :src="image" class="uploaded_image" />
-          </p>
+      <div class="form-group">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          id="description"
+          v-model="description"
+          class="form-input textarea"
+          placeholder="What do you have?"
+          rows="3"
+          required
+        ></textarea>
+        <small class="helper-text">Ensure you list all allergens, quantity, and any defects.</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span>Food Photo</span>
+          <span class="label-tip">Clear photos help people identify your food</span>
+        </label>
+
+        <div class="upload-container">
+          <input
+            type="file"
+            accept="image/*"
+            name="images"
+            id="post-file"
+            class="file-input"
+            multiple
+            @change="loadFiles"
+            style="display: none"
+          />
+          <!-- <label for="post-file" class="file-label" :class="{ 'uploading': isUploading }">
+            <span v-if="!isUploading" class="upload-icon">🍲</span>
+            <span v-else class="upload-spinner"></span>
+            <span v-if="!isUploading">Upload Photo</span>
+            <span v-else>Uploading...</span>
+          </label> -->
+          <label for="post-file" class="file-label">
+            <span class="upload-icon">🍲</span>
+            <span>Upload Photo</span>
+          </label>
         </div>
 
+        <div class="image-preview-container">
+          <!-- previews all images -->
+          <div v-if="imagePreviews.length">
+            <img v-for="(src, index) in imagePreviews" :key="index" :src="src" alt="Preview" class="preview-image" />
+          </div>
+          <button type="button" @click="removeImage" class="remove-image">
+            <span>×</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <div class="location-container">
+          <div v-if="coords.latitude !== Infinity && coords.longitude !== Infinity">
+            <div class="coordinate">
+              <span class="coordinate-label">Latitude:</span>
+              <span class="coordinate-value" style="color: brown">{{ formatCoordinates(coords.latitude) }}</span>
+            </div>
+            <div class="coordinate">
+              <span class="coordinate-label">Longitude:</span>
+              <span class="coordinate-value" style="color: brown">{{ formatCoordinates(coords.longitude) }}</span>
+            </div>
+            <div class="location-status success">
+              <span class="status-icon">✓</span>
+              <span>Location detected</span>
+            </div>
+          </div>
+          <div v-else class="location-status loading">
+            <span class="location-spinner"></span>
+            <span>Detecting your location...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Location Verification Section -->
+      <div class="form-group">
         <div class="display-location">
-          <label for="location">Location:</label>
-          <p v-if="coords.latitude !== Infinity && coords.longitude !== Infinity">
-            Latitude: {{ coords.latitude }}
-            <br />
-            Longitude: {{ coords.longitude }}
-          </p>
-          <p v-else>Locating...</p>
+          <label for="location" class="form-label">Location Verification:</label>
+          <div class="location-verification-container">
+            <p v-if="coords.latitude !== Infinity && coords.longitude !== Infinity" class="coordinates-display">
+              <span class="coordinate-label">Latitude:</span>
+              <span class="verification-value">{{ formatCoordinates(coords.latitude) }}</span>
+              <br />
+              <span class="coordinate-label">Longitude:</span>
+              <span class="verification-value">{{ formatCoordinates(coords.longitude) }}</span>
+            </p>
+            <p v-else class="locating-message">Locating...</p>
+          </div>
         </div>
+      </div>
 
-        <label for="expiry">Expiry:</label>
-        <input type="datetime-local" class="input" placeholder="What is the item's expiry?" v-model="expireAt" />
+      <div class="form-group">
+        <label for="expiry" class="form-label">Expiry</label>
+        <input type="datetime-local" id="expiry" v-model="expireAt" class="form-input" required />
+      </div>
 
-        <button class="post_button" @click="handlePost">POST</button>
-      </form>
-    </div>
+      <button class="post-button" type="submit">POST</button>
+    </form>
   </div>
 </template>
 
@@ -404,5 +481,13 @@
     margin: 0;
     color: #33691e;
     font-style: italic;
+  }
+
+  .image-preview-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
   }
 </style>

@@ -22,6 +22,7 @@ def list_posts(request):
         post_data = {
             "id": post.id,  # Post ID
             "author": post.author.username,  # Author's Username
+            "title": post.title,
             "description": post.description,
             "location": post.location,
             "quantity": post.quantity,
