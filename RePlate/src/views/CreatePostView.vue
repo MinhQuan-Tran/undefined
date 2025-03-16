@@ -1,7 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
+  import { mapStores } from "pinia";
+  import { useUserStore } from "@/stores/user";
 
+import { ref } from "vue";
+import { useGeolocation } from '@vueuse/core'
+
+const { coords } = useGeolocation()
 const imageUrl = ref<string | null>(null);
+const imageFile = ref<File | null>(null); //
+
+// Add reactive state for all form fields
+const description = ref("");
+const location = ref("");
+const expireAt = ref("");
+
+const userStore = useUserStore();
 
 const loadFile = (event: Event) => {
   const input = event.target as HTMLInputElement;
@@ -9,25 +22,90 @@ const loadFile = (event: Event) => {
     imageUrl.value = URL.createObjectURL(input.files[0]);
   }
 };
+
+
+async function handlePost() {
+  console.log("handlePost function called");
+  try {
+  const formData = new FormData();
+
+    formData.append("description", description.value);
+    if (coords.value.latitude !== Infinity && coords.value.longitude !== Infinity) {
+      const locationData = {
+        latitude: coords.value.latitude,
+        longitude: coords.value.longitude
+      };
+
+      formData.append("location", JSON.stringify({
+        locationData
+      }));
+    }
+  
+  formData.append("expire_at", expireAt.value);
+
+  if (imageFile.value) {
+      formData.append("image", imageFile.value);
+    }
+
+    const auth_token = userStore.token;
+
+    // 44.211.65.112:8000
+    const response = await fetch("http://127.0.0.1:8000/posts/create/", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${auth_token}`,
+        "Content-Type": "application/json"
+      },
+      body: formData
+      // body: JSON.stringify({
+      //   "description": description,
+      //   "expire_at": expireAt,
+      //   "location": location,
+      //   "images": imageFile
+      // })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      console.log("Post created successfully:", data);
+      // Reset form
+      description.value = "";
+      expireAt.value = "";
+      imageUrl.value = null;
+      imageFile.value = null;
+      // You could add a success message or redirect here
+    } else {
+      console.error("Error creating post:", data);
+      // Handle error (show message to user)
+    }
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    // Handle network errors
+  }
+
+  }
 </script>
 
 <template>
   <div class="container">
     <div class="create_post">
       <h2 class="title">Create a Listing:</h2>
+      <form @submit.prevent="handlePost"> //creation of form to submit
 
-      <label for="description">Description:</label>
+        <label for="description">Description:</label> 
       <input
         type="text"
         class="input"
         placeholder="What do you have?"
         name="description"
+        v-model = "description"
         required
       />
       <small style="color: black;">Ensure you list all allergens, quantity, and any defects.</small>
 
       <input
-        type="file"
+        type="file" 
         accept="image/*"
         name="image"
         id="file"
@@ -37,17 +115,28 @@ const loadFile = (event: Event) => {
       <label for="file" class="file_label">Upload Photo</label>
       <p v-if="imageUrl"><img :src="imageUrl" class="uploaded_image" /></p>
 
-      <label for="location">Location:</label>
-      <!-- Placeholder -->
+      <div class="display-location">
+        <label for="location">Location:</label>
+      <p v-if="coords.latitude!== Infinity && coords.longitude!== Infinity">
+      Latitude: {{coords.latitude}}
+      <br>
+      Longitude: {{coords.longitude}}
+      </p>
+      <p v-else>
+      Locating...
+      </p>
+      </div>
 
       <label for="expiry">Expiry:</label>
       <input
         type="datetime-local"
         class="input"
         placeholder="What is the item's expiry?"
+        v-model="expireAt"
       />
 
-      <button class="post_button">POST</button>
+      <button class="post_button" @click="handlePost">POST </button>
+    </form>
     </div>
   </div>
 </template>

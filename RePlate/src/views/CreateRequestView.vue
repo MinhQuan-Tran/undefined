@@ -59,7 +59,8 @@ const loadFile = (event: Event) => {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: #f9fafb;
+  height: min-content;
+  background-color: rgb(245, 245, 229);
   font-family: 'Arial', sans-serif;
 }
 
