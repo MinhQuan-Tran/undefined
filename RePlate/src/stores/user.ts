@@ -15,7 +15,7 @@ export const useUserStore = defineStore("user", {
 
   actions: {
     async authUser(token: string) {
-      return await fetch("https://44.211.65.112:8000/api/auth/google/", {
+      return await fetch("http://127.0.0.1:8000/api/auth/google/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token })
@@ -49,7 +49,7 @@ export const useUserStore = defineStore("user", {
       try {
         // 127.0.0.1:8000
         // 44.211.65.112:8000
-        const res = await fetch("https://44.211.65.112:8000/api/user/", {
+        const res = await fetch("http://127.0.0.1:8000/api/user/", {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${this.token}`,
