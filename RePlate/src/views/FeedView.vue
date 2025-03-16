@@ -107,7 +107,6 @@ export default {
           </div>
           <div class="modal-footer">
             <button @click="closePostModal" class="modal-button cancel-button">Cancel</button>
-            <button class="modal-button submit-button">Share Now</button>
           </div>
         </div>
       </div>
@@ -395,16 +394,6 @@ body.modal-open {
 
 .cancel-button:hover {
   background-color: #e8f5e9;
-}
-
-.submit-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-}
-
-.submit-button:hover {
-  background-color: #388e3c;
 }
 
 /* Transitions */

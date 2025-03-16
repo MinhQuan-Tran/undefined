@@ -99,27 +99,42 @@ const hasValidCoordinates = (): boolean => {
       </div>
 
       <div class="form-group">
-        <label class="form-label">Location</label>
-        <div class="location-container">
-          <div v-if="hasValidCoordinates()" class="location-data">
-            <div class="location-coordinates">
-              <div class="coordinate">
-                <span class="coordinate-label">Latitude:</span>
-                <span class="coordinate-value">{{ formatCoordinates(coords.latitude) }}</span>
-              </div>
-              <div class="coordinate">
-                <span class="coordinate-label">Longitude:</span>
-                <span class="coordinate-value">{{ formatCoordinates(coords.longitude) }}</span>
-              </div>
-            </div>
-            <div class="location-status success">
-              <span class="status-icon">✓</span>
-              <span>Location detected</span>
-            </div>
+      <label class="form-label">Location</label>
+      <div class="location-container">
+        <div v-if="coords.latitude !== Infinity && coords.longitude !== Infinity">
+          <div class="coordinate">
+            <span class="coordinate-label">Latitude:</span>
+            <span class="coordinate-value" style="color: brown;">{{ formatCoordinates(coords.latitude) }}</span>
           </div>
-          <div v-else class="location-status loading">
-            <span class="location-spinner"></span>
-            <span>Detecting your location...</span>
+          <div class="coordinate">
+            <span class="coordinate-label">Longitude:</span>
+            <span class="coordinate-value" style="color: brown;">{{ formatCoordinates(coords.longitude) }}</span>
+          </div>
+          <div class="location-status success">
+            <span class="status-icon">✓</span>
+            <span>Location detected</span>
+          </div>
+        </div>
+        <div v-else class="location-status loading">
+          <span class="location-spinner"></span>
+          <span>Detecting your location...</span>
+        </div>
+      </div>
+    </div>
+
+      <!-- New Location Verification Section -->
+      <div class="form-group">
+        <div class="display-location">
+          <label for="location" class="form-label">Location Verification:</label>
+          <div class="location-verification-container">
+            <p v-if="coords.latitude !== Infinity && coords.longitude !== Infinity" class="coordinates-display">
+              <span class="coordinate-label">Latitude:</span> <span class="verification-value">{{formatCoordinates(coords.latitude)}}</span>
+              <br>
+              <span class="coordinate-label">Longitude:</span> <span class="verification-value">{{formatCoordinates(coords.longitude)}}</span>
+            </p>
+            <p v-else class="locating-message">
+              Locating...
+            </p>
           </div>
         </div>
       </div>
@@ -185,7 +200,7 @@ const hasValidCoordinates = (): boolean => {
   display: block;
   margin-top: 4px;
   font-size: 0.85rem;
-  color: #558b2f;
+  color: #33691E;
 }
 
 .textarea {
@@ -317,12 +332,13 @@ const hasValidCoordinates = (): boolean => {
 
 .coordinate-label {
   font-weight: 600;
-  color: #33691e;
+  color: #2E7D32;
 }
 
 .coordinate-value {
   font-family: monospace;
   background-color: #e8f5e9;
+  color: #1B5E20;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.9rem;
@@ -381,5 +397,37 @@ const hasValidCoordinates = (): boolean => {
 
 .post-button:active {
   transform: translateY(0);
+}
+
+/* New Location Verification Styles */
+.display-location {
+  width: 100%;
+}
+
+.location-verification-container {
+  background-color: #e8f5e9;
+  border: 1px solid #c5e1a5;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.coordinates-display {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.verification-value {
+  font-family: monospace;
+  font-weight: 500;
+  color: #1B5E20;
+  background-color: #f1f8e9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.locating-message {
+  margin: 0;
+  color: #33691E;
+  font-style: italic;
 }
 </style>
