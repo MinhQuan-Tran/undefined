@@ -44,7 +44,7 @@ export default {
     <!-- Social Feed Section -->
     <div class="feed">
       <h2 class="feed_title">Social Feed</h2>
-      <<div v-for="post in posts" :key="post.id" class="post_card">
+      <div v-for="post in posts" :key="post.id" class="post_card">
         <div class="image-container">
           <img
           :src="post.image"
