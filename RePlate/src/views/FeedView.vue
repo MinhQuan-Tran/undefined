@@ -39,6 +39,9 @@ export default {
       </div>
     </div>
   </div>
+  <!-- <div class="right-side" >
+    Hello
+  </div> -->
 </template>
 
 <style scoped>
@@ -79,35 +82,14 @@ export default {
   cursor: pointer;
   margin-top: 10px;
 }
+
+/* Styling for the right-side div
+.right-side {
+  position: fixed;
+  right: 0;
+  top: 20px;
+  font-size: 24px;
+  color: white;
+  padding: 10px;
+} */
 </style>
-
-
-<!-- <script lang="ts">
-  export default {
-    data() {
-      return {};
-    }
-  };
-</script>
-
-<template>
-  <div>
-    <a href="/createpost">
-      <button>Share Food</button>
-    </a>
-  </div>
-
-  <div>feed scroll here</div>
-
-  <div>
-    <a href="/createrequest">
-      <button>Request Food</button>
-    </a>
-  </div>
-</template>
-
-<style scoped>
-  .template {
-    text-align: center;
-  }
-</style> -->
