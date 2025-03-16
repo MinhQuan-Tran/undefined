@@ -16,7 +16,6 @@ export const useUserStore = defineStore("user", {
   actions: {
     async authUser(token: string) {
       return await fetch("http://127.0.0.1:8000/api/auth/google/", {
-      return await fetch("http://127.0.0.1:8000/api/auth/google/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token })
