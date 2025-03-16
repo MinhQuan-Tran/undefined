@@ -38,17 +38,11 @@
           if (!response.ok) throw new Error("Failed to fetch location");
 
           const data = await response.json();
-          const address = data.address;
+          const address = data.display_name;
 
           if (!address) throw new Error("Invalid location data");
 
-          const locationName = `${address.city || address.town || address.village || "Unknown City"}, ${
-            address.state || "Unknown State"
-          }, ${address.country || "Unknown Country"}`;
-
-          this.locationCache[cacheKey] = locationName; // Cache result
-
-          return locationName;
+          return address;
         } catch (error) {
           console.error("Error fetching location:", error);
           return "Unknown Location";
