@@ -14,12 +14,18 @@ Instructions:
     - cd RePlate
     - npm install
     - npm run dev (to view the website)
-    - npm run android (to view the android app)
-    - npm run ios (to view the ios app)
+    - npm run android (to view the android app, not working with Google Auth)
+    - npm run ios (to view the ios app, not working with Google Auth)
 
   - Backend:
-    - .\env_site\Scripts\activate.ps1 (Windows)
-    - source env_site/bin/activate (Mac)
+    - Create a virtual environment
+      - py -m venv env_site (Windows)
+      - python -m venv env_site (Mac)
+    - Activate the virtual environment
+      - .\env_site\Scripts\activate.ps1 (Windows)
+      - source env_site/bin/activate (Mac)
     - cd RePlate_Backend
     - pip install -r requirements.txt
+    - python manage.py makemigrations
+    - python manage.py migrate
     - python manage.py runserver
